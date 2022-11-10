@@ -12,8 +12,6 @@ public class Juego {
     while (true){
         if (Jugador1.mover)
             System.out.println("Turno de las Blancas");
-            System.out.println("hola sjdhjahpa");
-
         if (Jugador2.mover)
             System.out.println("Turno de las negras");
          Pieza.valido = false;
@@ -45,6 +43,6 @@ public class Juego {
             turno += 1;
         }
     }
-        }
     }
+}
 

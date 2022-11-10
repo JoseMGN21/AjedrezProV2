@@ -46,19 +46,21 @@ public class Peon extends Pieza {
         if (movValidos.size() == 0) {
             System.out.println("No hay movimientos válidos para esa pieza.");
             System.out.println("Seleccione otra pieza.");
+            this.moved = false;
             valido = false;
             Juego.tablero.tab[posicionx][posiciony].selected = false;
         } else {
             System.out.println("Movimientos válidos:");
             for (int[] elemento : movValidos) {
-
                 System.out.println("[" + elemento[0] + "," + elemento[1] + "]");
             }
             valido = true;
+            this.moved = true;
         }
         if(movValidos.size() == 0){
             System.out.println("No existen movimientos válidos para esta pieza, elige otra.");
             this.selected = false;
+            this.moved = false;
             valido = false;
         }
     }
