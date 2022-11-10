@@ -25,21 +25,11 @@ public class Tablero {
                     tab[posx][posy] = new Reina();
                 else if ((posx == 1  || posx == 6) )
                     tab[posx][posy] = new Peon();
-                //else if ((posx==))
+
             }
         }
     }
 
-    public enum vistaCoordenada {
-        a(),
-        b(),
-        c(),
-        d(),
-        e(),
-        f(),
-        g(),
-        h(),
-    }
 
     public void imprimirTablero() {
         for (int i = 0; i < tamaño; i++) {
@@ -104,12 +94,12 @@ public class Tablero {
                     }
                 }
             }
-            System.out.println("\033[0;101m" + "\u001B[35m" + " " + numeros[(numeros.length - 1) - i] + " " + "\u001B[0m");
+            System.out.println("\033[0;103m" + "\u001B[30m" + " " + numeros[(numeros.length - 1) - i] + " " + "\u001B[0m");
             //System.out.print("|");
 
         }
         for (int l = 0; l < letras.length; l++) {
-            System.out.print("\u001b[48;5;31m" + "\u001B[38;5;31m"+ "♞" +"\u001b[30m"+ letras[l] + " " + "\u001b[0m");
+            System.out.print("\u001b[0;103m" + "\u001B[33;33;33m"+ "♞" +"\u001b[30m"+ letras[l] + " " + "\u001b[0m");
         }
         System.out.println("");
        /* public void MoverPieza(int coordx, int coordy){
