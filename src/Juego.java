@@ -12,7 +12,7 @@ public class Juego {
     while (true){
         if (Jugador1.mover)
             System.out.println("Turno de las Blancas");
-            System.out.println("hola pa");
+            System.out.println("hola sjdhjahpa");
 
         if (Jugador2.mover)
             System.out.println("Turno de las negras");
