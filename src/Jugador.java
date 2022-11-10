@@ -8,54 +8,53 @@ public class Jugador {
     static int[] coords = new int[2];
     static int nuevaPosx, nuevaPosy;
     boolean mover;
-public Jugador(boolean color){
-    if(color)
-        mover=true;
-    else
-        mover=false;
 
-}
+    public Jugador(boolean color) {
+        if (color)
+            mover = true;
+        else
+            mover = false;
+
+    }
 
     public int[] seleccionarPieza() {
-        String coordenada = "";
-        char letracoord ;
+        String coordenada;
+        char letracoord;
         char numerocoord;
-        ChessPosition cp = null;
         if (Juego.turno % 2 == 0)
             color = false;
         else
             color = true;
+
+
         while (true) {
-            while (true) {
-                try {
-                    System.out.println("Introduce la coordenada de la pieza que desee mover");
-                    coordenada = entrada.nextLine();
-                    coordenada = coordenada.toUpperCase();
-                    cp = ChessPosition.valueOf(coordenada);
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Coordenada incorrecta, intente de nuevo");
-                    entrada = new Scanner(System.in);
-                }
-            }
-            while (true) {
-                if (coordenada.length() == 2) {
+            System.out.println("Introduce la coordenada de la pieza que desee mover");
+            coordenada = entrada.nextLine();
+            coordenada = coordenada.toUpperCase();
+
+
+            if (coordenada.length() == 2) {
+
                 letracoord = coordenada.charAt(0);
                 numerocoord = coordenada.charAt(1);
-                    if ((letracoord <= 'H' && letracoord >= 'A') && (numerocoord <= '8' && numerocoord >= '1')) {
-                        break;
-                    } else
-                        System.out.println("Coordenada Invalida");
-                } else
+
+
+                if (!(letracoord <= 'H' && letracoord >= 'A') && !(numerocoord <= '8' && numerocoord >= '1'))
                     System.out.println("Coordenada Invalida");
+
+
+            } else {
+                System.out.println("Coordenada Invalida");
             }
+
             try {
+                ChessPosition cp = ChessPosition.valueOf(coordenada);
                 if (Juego.tablero.tab[cp.coordy][cp.coordx].color == color) {
                     System.out.println("Pieza válido");
                     Juego.tablero.tab[cp.coordy][cp.coordx].selected = true;
                     coords[0] = cp.coordy;
                     coords[1] = cp.coordx;
-                    Pieza.valido=true;
+                    Pieza.valido = true;
                     Juego.tablero.tab[cp.coordy][cp.coordx].movimiento();
                     return coords;
 
@@ -63,13 +62,11 @@ public Jugador(boolean color){
                     System.out.println("Selecciona una ficha de tu color.");
 
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("La casilla seleccionada está vacía, intente de nuevo.");
             }
         }
-        }
-
-
+    }
 
 
     public enum ChessPosition {
@@ -156,51 +153,66 @@ public Jugador(boolean color){
         ChessPosition(int coordx, int coordy) {
             this.coordx = coordx;
             this.coordy = coordy;
+
         }
+
         public int CoordX() {
             return coordx;
         }
+
         public int CoordY() {
             return coordy;
         }
+
         public String toString() {
             return name() + " fila=" + CoordX() + ", columna=" + CoordY();
         }
     }
 
-public void moverPieza(Pieza pieza){
-        Pieza.valido=false;
-        ChessPosition cp = null;
-        while(true) {
+    public void moverPieza(Pieza pieza) {
+        Pieza.valido = false;
+        while (true) {
+            System.out.println("Escriba la coordenada a donde quiera mover la pieza ");
+            String coordenada = entrada.nextLine();
+            coordenada = coordenada.toUpperCase();
+
+            if (coordenada.length() == 2) {
+                char letracoord = coordenada.charAt(0);
+                char numerocoord = coordenada.charAt(1);
+
+                if (!(letracoord <= 'H' && letracoord >= 'A') && !(numerocoord <= '8' && numerocoord >= '1'))
+                    System.out.println("Coordenada Invalida");
+
+
+            } else {
+                System.out.println("Coordenada Invalida");
+            }
+
             try {
-                System.out.println("Escriba la coordenada a donde quiera mover la pieza ");
-                String coordenada = entrada.nextLine();
-                coordenada = coordenada.toUpperCase();
-                cp = ChessPosition.valueOf(coordenada);
-                break;
+                ChessPosition cp = ChessPosition.valueOf(coordenada);
+                nuevaPosx = cp.coordx;
+                nuevaPosy = cp.coordy;
+                for (int[] elemento : pieza.movValidos) {
+                    if (elemento[0] == nuevaPosy && elemento[1] == nuevaPosx) {
+                        mover = true;
+                        Juego.tablero.tab[pieza.posicionx][pieza.posiciony] = null;
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = pieza;
+                        pieza.posicionx = cp.coordx;
+                        pieza.posiciony = cp.coordy;
+                        pieza.selected = false;
+                        Pieza.valido = true;
+                        break;
+                    }
+
+                }
             } catch (Exception e) {
-                System.out.println("Coordenada no válida, intente de nuevo.");
-                entrada = new Scanner(System.in);
-            }
+                System.out.println("Casilla no existe.");
+            }break;
+
         }
-        nuevaPosx=cp.coordx;
-        nuevaPosy=cp.coordy;
-        for(int[] elemento :pieza.movValidos ){
-            if (elemento[0] == nuevaPosy && elemento[1] == nuevaPosx) {
-                mover = true;
-                Juego.tablero.tab[pieza.posicionx][pieza.posiciony] = null;
-                Juego.tablero.tab[nuevaPosy][nuevaPosx] = pieza;
-                pieza.posiciony = cp.coordx;
-                pieza.posicionx = cp.coordy;
-                pieza.selected = false;
-                ((Peon) pieza).moved = true;
-                Pieza.valido = true;
-            }
     }
-    pieza.movValidos.clear();
 }
 
-}
 
 
 
