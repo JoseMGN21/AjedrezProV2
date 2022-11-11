@@ -99,7 +99,7 @@ public class Tablero {
 
         }
         for (int l = 0; l < letras.length; l++) {
-            System.out.print("\u001b[0;103m" + "\u001B[33;33;33m"+ "♞" +"\u001b[30m"+ letras[l] + " " + "\u001b[0m");
+            System.out.print("\u001b[0;103m" + "\u001B[33;33;33m"+ "   " +"\u001b[30m"+ letras[l] + " " + "\u001b[0m");
         }
         System.out.println("");
        /* public void MoverPieza(int coordx, int coordy){
