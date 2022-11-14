@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Rey extends Pieza{
     boolean enJaque;
     boolean moved;
@@ -23,16 +25,17 @@ public class Rey extends Pieza{
 
     @Override
     public void movimiento() {
-        for (n = -1; n <= 1; n++) {
-            for (m = -1; m <= 1; m++) {
+        for (int n = -1; n <= 1; n++) {
+            for (int m = -1; m <= 1; m++) {
                 if (posicionx + n < 0 || posicionx + n > 7 || (n == 0 && m == 0))
                     continue;
                 try {
-                    if (Juego.tablero.tab[posicionx + n][posiciony + m] == null) {
+                    int[] posRey = {posicionx + n,posiciony + m};
+                    if (Juego.tablero.tab[posicionx + n][posiciony + m] == null && !comprobarJaque(posRey)) {
                         mov[0] = posicionx + n;
                         mov[1] = posiciony + m;
                         movValidos.add(mov.clone());
-                    } else if ((Juego.tablero.tab[posicionx + n][posiciony + n].color != Juego.tablero.tab[posicionx][posiciony].color)) {
+                    } else if ((Juego.tablero.tab[posicionx + n][posiciony + m].color != Juego.tablero.tab[posicionx][posiciony].color) && !comprobarJaque(posRey)) {
                         mov[0] = posicionx + n;
                         mov[1] = posiciony + m;
                         movValidos.add(mov.clone());
@@ -46,19 +49,28 @@ public class Rey extends Pieza{
             System.out.println("No existen movimientos válidos para esta pieza, elige otra.");
             this.selected = false;
             valido = false;
+        } else {
+            System.out.println("Movimientos válidos:");
+            for (int[] elemento : movValidos) {
+                System.out.println("[" + elemento[0] + "," + elemento[1] + "]");
+            }
+            valido = true;
         }
     }
 
     public boolean comprobarJaque(int[] posRey) {
         boolean chocaxp = false, chocayp = false, chocaxn = false, chocayn = false, chocadxp = false, chocadxn = false, chocadyp = false, chocadyn = false;
-        for (n = 1; !(posRey[0] + n >= 7 && posRey[0] - n < 0 && posRey[1] + n >= 7 && posRey[1] - n < 0) && (!chocaxp || !chocayp || !chocaxn || !chocayn || !chocadyn || !chocadyp || !chocadxn || !chocadxp); n++) {
+        this.enJaque = false;
+        for (int n = 1; !(posRey[0] + n >= 7 && posRey[0] - n < 0 && posRey[1] + n >= 7 && posRey[1] - n < 0) && (!chocaxp || !chocayp || !chocaxn || !chocayn || !chocadyn || !chocadyp || !chocadxn || !chocadxp); n++) {
             if (!(posRey[0] + n > 7)) {
                 if (!chocaxp) {
                     if (Juego.tablero.tab[posRey[0] + n][posRey[1]] != null) {
                         if ((Juego.tablero.tab[posRey[0] + n][posRey[1]].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] + n][posRey[1]] instanceof Torre || Juego.tablero.tab[posRey[0] + n][posRey[1]] instanceof Reina) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1]];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1]];
+                                } catch(Exception e){return true;}
                                 chocaxp = true;
                             }
                         } else chocaxp = true;
@@ -70,8 +82,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0]][posRey[1] + n] != null) {
                         if ((Juego.tablero.tab[posRey[0]][posRey[1] + n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0]][posRey[1] + n] instanceof Torre || Juego.tablero.tab[posRey[0]][posRey[1] + n] instanceof Reina) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0]][posRey[1] + n];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0]][posRey[1] + n];
+                                } catch(Exception e) {return true;}
                                 chocayp = true;
                             }
                         } else chocayp = true;
@@ -83,8 +97,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0] - n][posRey[1]] != null) {
                         if ((Juego.tablero.tab[posRey[0] - n][posRey[1]].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] - n][posRey[1]] instanceof Torre || Juego.tablero.tab[posRey[0] - n][posRey[1]] instanceof Reina) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1]];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1]];
+                                } catch (Exception e){return true;}
                                 chocaxn = true;
                             }
                         } else chocaxn = true;
@@ -96,8 +112,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0]][posRey[1] - n] != null) {
                         if ((Juego.tablero.tab[posRey[0]][posRey[1] - n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0]][posRey[1] - n] instanceof Torre || Juego.tablero.tab[posRey[0]][posRey[1] - n] instanceof Reina) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0]][posRey[1]];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0]][posRey[1]];
+                                } catch (Exception e){return true;}
                                 chocayn = true;
                             }
                         } else chocayn = true;
@@ -109,8 +127,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0] + n][posRey[1] + n] != null) {
                         if ((Juego.tablero.tab[posRey[0] + n][posRey[1] + n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] + n][posRey[1] + n] instanceof Alfil || Juego.tablero.tab[posRey[0] + n][posRey[1] + n] instanceof Reina || (!(Juego.tablero.tab[posRey[0]][posRey[1]].color) && Juego.tablero.tab[posRey[0] + n][posRey[1] + n] instanceof Peon)) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1] + n];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1] + n];
+                                } catch (Exception e) {return true;}
                                 chocadxp = true;
                             }
                         } else chocadxp = true;
@@ -122,8 +142,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0] - n][posRey[1] + n] != null) {
                         if ((Juego.tablero.tab[posRey[0] - n][posRey[1] + n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] - n][posRey[1] + n] instanceof Alfil || Juego.tablero.tab[posRey[0] - n][posRey[1] + n] instanceof Reina || ((Juego.tablero.tab[posRey[0]][posRey[1]].color) && Juego.tablero.tab[posRey[0] - n][posRey[1] + n] instanceof Peon)) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1] + n];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1] + n];
+                                } catch (Exception e){return true;}
                                 chocadyp = true;
                             }
                         } else chocadyp = true;
@@ -135,8 +157,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0] - n][posRey[1] - n] != null) {
                         if ((Juego.tablero.tab[posRey[0] - n][posRey[1] - n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] - n][posRey[1] - n] instanceof Alfil || Juego.tablero.tab[posRey[0] - n][posRey[1] - n] instanceof Reina || ((Juego.tablero.tab[posRey[0]][posRey[1]].color) && Juego.tablero.tab[posRey[0] - n][posRey[1] - n] instanceof Peon)) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1] - n];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] - n][posRey[1] - n];
+                                } catch(Exception e){return true;}
                                 chocadxn = true;
                             }
                         } else chocadxn = true;
@@ -148,8 +172,10 @@ public class Rey extends Pieza{
                     if (Juego.tablero.tab[posRey[0] + n][posRey[1] - n] != null) {
                         if ((Juego.tablero.tab[posRey[0] + n][posRey[1] - n].color != Juego.tablero.tab[posRey[0]][posRey[1]].color)) {
                             if (Juego.tablero.tab[posRey[0] + n][posRey[1] - n] instanceof Alfil || Juego.tablero.tab[posRey[0] + n][posRey[1] - n] instanceof Reina || (!(Juego.tablero.tab[posRey[0]][posRey[1]].color) && Juego.tablero.tab[posRey[0] + n][posRey[1] - n] instanceof Peon)) {
-                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
-                                Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1] - n];
+                                try {
+                                    ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                    Juego.piezaJaque = Juego.tablero.tab[posRey[0] + n][posRey[1] - n];
+                                } catch (Exception e){return true;}
                                 chocadyn = true;
                             }
                         } else chocadyn = true;
@@ -157,7 +183,72 @@ public class Rey extends Pieza{
                 }
             }else chocadyn = true;
         }
+        for (int n = 1; n <= 2; n++) {
+            for (int m = 2; m >= 1; m--) {
+                if (m == n)
+                    continue;
+                try {
+                    if (Juego.tablero.tab[posicionx + n][posiciony + m] != null) {
+                        if (Juego.tablero.tab[posicionx + n][posiciony + m] instanceof Caballo && Juego.tablero.tab[posicionx + n][posiciony + m].color != this.color) {
+                            try {
+                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                Juego.piezaJaque = Juego.tablero.tab[posicionx + n][posiciony + m];
+                            } catch(Exception e) {return true;}
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                try {
+                    if (Juego.tablero.tab[posicionx - n][posiciony + m] != null) {
+                        if (Juego.tablero.tab[posicionx - n][posiciony + m] instanceof Caballo && Juego.tablero.tab[posicionx - n][posiciony + m].color != this.color) {
+                            try {
+                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                Juego.piezaJaque = Juego.tablero.tab[posicionx - n][posiciony + m];
+                            } catch (Exception e){return true;}
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                try {
+                    if (Juego.tablero.tab[posicionx + n][posiciony - m] != null) {
+                        if (Juego.tablero.tab[posicionx + n][posiciony - m] instanceof Caballo && Juego.tablero.tab[posicionx + n][posiciony - m].color != this.color) {
+                            try {
+                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                Juego.piezaJaque = Juego.tablero.tab[posicionx + n][posiciony - m];
+                            } catch (Exception e) {return true;}
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                try {
+                    if (Juego.tablero.tab[posicionx - n][posiciony - m] != null) {
+                        if (Juego.tablero.tab[posicionx - n][posiciony - m] instanceof Caballo && Juego.tablero.tab[posicionx - n][posiciony - m].color != this.color) {
+                            try {
+                                ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque = true;
+                                Juego.piezaJaque = Juego.tablero.tab[posicionx - n][posiciony - m];
+                            } catch (Exception e) {return true;}
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }
         return ((Rey) Juego.tablero.tab[posRey[0]][posRey[1]]).enJaque;
+    }
+    @Override
+    public void amenaza(Pieza rey){
+    }
+
+    public ArrayList<int[]> compararListas(ArrayList<int[]> movValidos, ArrayList<int[]> movAmenaza) {
+        ArrayList<int[]> movimientos = new ArrayList<int[]>();
+        for (int[] elemento : movValidos) {
+            for (int[] elemento2 : movAmenaza) {
+                if (elemento[0] == elemento2[0] && elemento[1] == elemento2[1])
+                    if(elemento[0] == Juego.piezaJaque.posicionx && elemento[1] == Juego.piezaJaque.posiciony)
+                            movimientos.add(elemento);
+            }
+        }
+        return movimientos;
     }
 }
 

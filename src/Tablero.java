@@ -8,7 +8,7 @@ public class Tablero {
     static int posy;
 
     public Tablero(){
-        tab= new Pieza[tamaño+2][tamaño];
+        tab= new Pieza[tamaño+2][tamaño]; //Crear piezas por su posición (32 instrucciones)
         for(posx=0;posx<tamaño; posx++){
             for(posy=0;posy<tamaño; posy++){
                 if((posx==0 && posy==0)||(posx==0 && posy==7)||(posx==7 && posy==0) ||(posx==7 && posy==7))

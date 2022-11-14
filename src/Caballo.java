@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Caballo extends Pieza {
 
     public Caballo(){
@@ -17,8 +19,8 @@ public class Caballo extends Pieza {
 
     @Override
     public void movimiento() {
-        for (n = 1; n <= 2; n++) {
-            for (m = 2; m >= 1; m--) {
+        for (int n = 1; n <= 2; n++) {
+            for (int m = 2; m >= 1; m--) {
                 if (m == n)
                     continue;
                 try {
@@ -75,7 +77,31 @@ public class Caballo extends Pieza {
                 }
             }
         }
-
+        posPieza[0] = this.posicionx;
+        posPieza[1] = this.posiciony;
+        buscarRey(posPieza);
+        if(Juego.jaqueNegro){
+            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyN[0]][Juego.posReyN[1]])){
+                Juego.jaqueMate = true;
+                if(Juego.jaqueMate){
+                    System.out.println("Jaque mate");
+                    System.exit(0);}
+                return;
+            }
+            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
+        } else if (Juego.jaqueBlanco){
+            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyB[0]][Juego.posReyB[1]])){
+                Juego.jaqueMate = true;
+                if(Juego.jaqueMate){
+                    System.out.println("Jaque mate");
+                    System.exit(0);}
+                return;
+            }
+            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
+        }
+        try {
+            movValidos = compararListas(movValidos, Juego.piezaBloqueada.movAmenaza);
+        } catch(Exception e){}
         if (movValidos.size() == 0) {
             System.out.println("No hay movimientos válidos para esa pieza.");
             System.out.println("Seleccione otra pieza.");
@@ -89,10 +115,22 @@ public class Caballo extends Pieza {
             }
             valido = true;
         }
-        if(movValidos.size() == 0){
-            System.out.println("No existen movimientos válidos para esta pieza, elige otra.");
-            this.selected = false;
-            valido = false;
+    }
+    @Override
+    public void amenaza(Pieza rey){
+        ame[0] = this.posicionx;
+        ame[1] = this.posiciony;
+        movAmenaza.add(ame.clone());
+    }
+
+    public ArrayList<int[]> compararListas(ArrayList<int[]> movValidos, ArrayList<int[]> movAmenaza) {
+        ArrayList<int[]> movimientos = new ArrayList<int[]>();
+        for (int[] elemento : movValidos) {
+            for (int[] elemento2 : movAmenaza) {
+                if (elemento[0] == elemento2[0] && elemento[1] == elemento2[1])
+                    movimientos.add(elemento);
+            }
         }
+        return movimientos;
     }
 }

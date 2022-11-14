@@ -193,6 +193,15 @@ public void moverPieza(Pieza pieza){
                     pieza.posicionx = cp.coordy;
                     pieza.selected = false;
                     Pieza.valido = true;
+                    try {
+                        if (((Rey) pieza).color) {
+                            Juego.posReyB[0] = pieza.posicionx;
+                            Juego.posReyB[1] = pieza.posiciony;
+                        } else {
+                            Juego.posReyN[0] = pieza.posicionx;
+                            Juego.posReyN[1] = pieza.posiciony;
+                        }
+                    } catch (Exception e) {}
                 } //else
                    // System.out.println("Casilla inválida, selecciona otra.");
             }
