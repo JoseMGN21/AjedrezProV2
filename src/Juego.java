@@ -20,13 +20,15 @@ public class Juego {
         while (!Pieza.valido) {
             if (Jugador1.mover) {
                 if(((Rey) tablero.tab[posReyB[0]][posReyB[1]]).enJaque){
+                    piezaJaque.movAmenaza.clear();
                     piezaJaque.amenaza(tablero.tab[posReyB[0]][posReyB[1]]);
                 }
                 Jugador1.seleccionarPieza();
                 tablero.imprimirTablero();
             }
             if (Jugador2.mover){
-                if(((Rey) tablero.tab[posReyN[0]][posReyN[1]]).enJaque){
+                if(((Rey) tablero.tab[posReyB[0]][posReyB[1]]).enJaque){
+                    piezaJaque.movAmenaza.clear();
                     piezaJaque.amenaza(tablero.tab[posReyN[0]][posReyN[1]]);
                 }
                 Jugador2.seleccionarPieza();
@@ -40,12 +42,30 @@ public class Juego {
         tablero.imprimirTablero();
         if(((Rey) tablero.tab[posReyB[0]][posReyB[1]]).comprobarJaque(posReyB)){
             System.out.println("Jaque al rey blanco");
+            piezaJaque.amenaza(tablero.tab[posReyB[0]][posReyB[1]]);
+            if(!piezaJaque.comprobarBloqueoComer() && !((Rey) tablero.tab[posReyB[0]][posReyB[1]]).comprobarMovimientoRey(tablero.tab[Juego.posReyB[0]][Juego.posReyB[1]])) {
+                System.out.println("Jaque Mate");
+                System.exit(0);
+            }
             jaqueBlanco = true;
-        } else jaqueBlanco = false;
+            ((Rey) tablero.tab[posReyB[0]][posReyB[1]]).enJaque = true;
+        } else {
+            jaqueBlanco = false;
+            ((Rey) tablero.tab[posReyB[0]][posReyB[1]]).enJaque = false;
+        }
         if(((Rey) tablero.tab[posReyN[0]][posReyN[1]]).comprobarJaque(posReyN)){
             System.out.println("Jaque al rey negro");
+            piezaJaque.amenaza(tablero.tab[posReyN[0]][posReyN[1]]);
+            if(!piezaJaque.comprobarBloqueoComer() && !((Rey) tablero.tab[posReyN[0]][posReyN[1]]).comprobarMovimientoRey(tablero.tab[Juego.posReyN[0]][Juego.posReyN[1]])) {
+                System.out.println("Jaque Mate");
+                System.exit(0);
+            }
             jaqueNegro = true;
-        } else jaqueNegro = false;
+            ((Rey) tablero.tab[posReyN[0]][posReyN[1]]).enJaque = true;
+        } else {
+            jaqueNegro = false;
+            ((Rey) tablero.tab[posReyN[0]][posReyN[1]]).enJaque = false;
+        }
 
         if(Pieza.valido) {
             Jugador1.mover ^= true;

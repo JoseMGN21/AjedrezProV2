@@ -189,6 +189,12 @@ public void moverPieza(Pieza pieza){
                     mover = true;
                     Juego.tablero.tab[pieza.posicionx][pieza.posiciony] = null;
                     Juego.tablero.tab[nuevaPosy][nuevaPosx] = pieza;
+                    if(pieza instanceof Peon && pieza.color && nuevaPosy == 0){
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosx,nuevaPosy);
+                    }
+                    else if(pieza instanceof Peon && !pieza.color && nuevaPosy == 7){
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosx,nuevaPosy);
+                    }
                     pieza.posiciony = cp.coordx;
                     pieza.posicionx = cp.coordy;
                     pieza.selected = false;

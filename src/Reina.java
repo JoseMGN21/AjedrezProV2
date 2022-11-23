@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class Reina extends Pieza {
 
-    public Reina() {
+    public Reina(int posx, int posy) {
         super();
         viva = true;
-        if (Tablero.posx == 0) {
+        if (posx == 0) {
 
             color = false;
             icon = "♛";
@@ -14,8 +14,8 @@ public class Reina extends Pieza {
             icon = "♛";
         }
         regresar = true;
-        posicionx = Tablero.posx;
-        posiciony = Tablero.posy;
+        posicionx = posx;
+        posiciony = posy;
     }
 
     @Override
@@ -138,26 +138,9 @@ public class Reina extends Pieza {
         posPieza[0] = this.posicionx;
         posPieza[1] = this.posiciony;
         buscarRey(posPieza);
-        if(Juego.jaqueNegro){
-            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyN[0]][Juego.posReyN[1]])){
-                Juego.jaqueMate = true;
-                if(Juego.jaqueMate){
-                    System.out.println("Jaque mate");
-                    System.exit(0);}
-                return;
-            }
-            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
-        } else if (Juego.jaqueBlanco){
-            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyB[0]][Juego.posReyB[1]])){
-                Juego.jaqueMate = true;
-                if(Juego.jaqueMate){
-                    System.out.println("Jaque mate");
-                    System.exit(0);}
-                return;
-            }
-            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
-        }
         try {
+            if(Juego.jaqueBlanco || Juego.jaqueNegro)
+                movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
             movValidos = compararListas(movValidos, Juego.piezaBloqueada.movAmenaza);
         } catch (Exception e) {}
         if (movValidos.size() == 0) {
@@ -177,29 +160,29 @@ public class Reina extends Pieza {
     public void amenaza(Pieza rey) {
         if(this.posicionx == rey.posicionx) {
             if (this.posiciony < rey.posiciony) {
-                for (int n = 0; (this.posiciony - n) > rey.posiciony; n++) {
-                    ame[0] = this.posicionx;
-                    ame[1] = this.posiciony - n;
-                    movAmenaza.add(ame.clone());
-                }
-            } else {
                 for (int n = 0; (this.posiciony + n) < rey.posiciony; n++) {
                     ame[0] = this.posicionx;
                     ame[1] = this.posiciony + n;
+                    movAmenaza.add(ame.clone());
+                }
+            } else {
+                for (int n = 0; (this.posiciony - n) > rey.posiciony; n++) {
+                    ame[0] = this.posicionx;
+                    ame[1] = this.posiciony - n;
                     movAmenaza.add(ame.clone());
                 }
             }
         }
         else if (this.posiciony == rey.posiciony){
             if (this.posicionx < rey.posicionx) {
-                for (int n = 0; (this.posicionx - n) > rey.posicionx; n++) {
-                    ame[0] = this.posicionx - n;
+                for (int n = 0; (this.posicionx + n) < rey.posicionx; n++) {
+                    ame[0] = this.posicionx + n;
                     ame[1] = this.posiciony;
                     movAmenaza.add(ame.clone());
                 }
             } else {
-                for (int n = 0; (this.posicionx + n) < rey.posicionx; n++) {
-                    ame[0] = this.posicionx + n;
+                for (int n = 0; (this.posicionx - n) > rey.posicionx; n++) {
+                    ame[0] = this.posicionx - n;
                     ame[1] = this.posiciony;
                     movAmenaza.add(ame.clone());
                 }

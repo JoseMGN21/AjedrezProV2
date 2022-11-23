@@ -5,10 +5,8 @@ public abstract class Pieza {
     boolean color;
     boolean regresar;
     boolean viva;
-    int noCasillas;
     int posicionx;
     int posiciony;
-    boolean movimiento;
     boolean selected;
     String icon;
     ArrayList<int[]> movValidos = new ArrayList<int[]>();
@@ -27,16 +25,23 @@ public abstract class Pieza {
     public abstract ArrayList<int[]> compararListas(ArrayList<int[]> movValidos, ArrayList<int[]> movAmenaza);
 
     public boolean comprobarBloqueoComer() {
-        boolean chocaxp = false, chocayp = false, chocaxn = false, chocayn = false, chocadxp = false, chocadxn = false, chocadyp = false, chocadyn = false;
         for (int[] elemento : this.movAmenaza) {
+            boolean chocaxp = false, chocayp = false, chocaxn = false, chocayn = false, chocadxp = false, chocadxn = false, chocadyp = false, chocadyn = false;
             for (int n = 1; !(elemento[0] + n >= 7 && elemento[0] - n < 0 && elemento[1] + n >= 7 && elemento[1] - n < 0) && (!chocaxp || !chocayp || !chocaxn || !chocayn || !chocadyn || !chocadyp || !chocadxn || !chocadxp); n++) {
                 if (!(elemento[0] + n > 7)) {
                     if (!chocaxp) {
                         if (Juego.tablero.tab[elemento[0] + n][elemento[1]] != null) {
-                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1]].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
+                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1]].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) != 0 && !this.color && (n < 3)){
+                                    if(n == 1 && Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof  Peon && Juego.tablero.tab[elemento[0] + n][elemento[1]].color != this.color){
+                                        return true;
+                                    } else if (n == 2 && Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof  Peon && Juego.tablero.tab[elemento[0] + n][elemento[1]].color != this.color && !((Peon) Juego.tablero.tab[elemento[0] + n][elemento[1]]).moved){
+                                        return true;
+                                    }
+                                }
                                 if (Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof Torre || Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof Reina) {
                                     return true;
-                                }
+                                } else chocaxp = true;
                             } else chocaxp = true;
                         }
                     }
@@ -44,10 +49,17 @@ public abstract class Pieza {
                 if (!(elemento[1] + n > 7)) {
                     if (!chocayp) {
                         if (Juego.tablero.tab[elemento[0]][elemento[1] + n] != null) {
-                            if ((Juego.tablero.tab[elemento[0]][elemento[1] + n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
+                            if ((Juego.tablero.tab[elemento[0]][elemento[1] + n].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) != 0 && this.color && (n < 3)){
+                                    if(n == 1 && Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof  Peon && Juego.tablero.tab[elemento[0] + n][elemento[1]].color != this.color){
+                                        return true;
+                                    } else if (n == 2 && Juego.tablero.tab[elemento[0] + n][elemento[1]] instanceof  Peon && Juego.tablero.tab[elemento[0] + n][elemento[1]].color != this.color && !((Peon) Juego.tablero.tab[elemento[0] + n][elemento[1]]).moved){
+                                        return true;
+                                    }
+                                }
                                 if (Juego.tablero.tab[elemento[0]][elemento[1] + n] instanceof Torre || Juego.tablero.tab[elemento[0]][elemento[1] + n] instanceof Reina) {
                                     return true;
-                                }
+                                } else chocayp = true;
                             } else chocayp = true;
                         }
                     }
@@ -55,10 +67,10 @@ public abstract class Pieza {
                 if (!(elemento[0] - n < 0)) {
                     if (!chocaxn) {
                         if (Juego.tablero.tab[elemento[0] - n][elemento[1]] != null) {
-                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1]].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
+                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1]].color != Juego.piezaJaque.color)) {
                                 if (Juego.tablero.tab[elemento[0] - n][elemento[1]] instanceof Torre || Juego.tablero.tab[elemento[0] - n][elemento[1]] instanceof Reina) {
                                     return true;
-                                }
+                                } else chocaxn = true;
                             } else chocaxn = true;
                         }
                     }
@@ -66,10 +78,10 @@ public abstract class Pieza {
                 if (!(elemento[1] - n < 0)) {
                     if (!chocayn) {
                         if (Juego.tablero.tab[elemento[0]][elemento[1] - n] != null) {
-                            if ((Juego.tablero.tab[elemento[0]][elemento[1] - n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
+                            if ((Juego.tablero.tab[elemento[0]][elemento[1] - n].color != Juego.piezaJaque.color)) {
                                 if (Juego.tablero.tab[elemento[0]][elemento[1] - n] instanceof Torre || Juego.tablero.tab[elemento[0]][elemento[1] - n] instanceof Reina) {
                                     return true;
-                                }
+                                } else chocayn = true;
                             } else chocayn = true;
                         }
                     }
@@ -77,10 +89,14 @@ public abstract class Pieza {
                 if (!(elemento[0] + n > 7 || elemento[1] + n > 7)) {
                     if (!chocadxp) {
                         if (Juego.tablero.tab[elemento[0] + n][elemento[1] + n] != null) {
-                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1] + n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
-                                if (Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Alfil || Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Reina || (!(Juego.tablero.tab[elemento[0]][elemento[1]].color) && Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Peon)) {
+                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1] + n].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) == 0 && !this.color && (n == 1)){
+                                    if(Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Peon && Juego.tablero.tab[elemento[0] + n][elemento[1] + n].color != this.color);
                                     return true;
                                 }
+                                if (Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Alfil || Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Reina || (!(Juego.piezaJaque.color) && Juego.tablero.tab[elemento[0] + n][elemento[1] + n] instanceof Peon)) {
+                                    return true;
+                                } else chocadxp = true;
                             } else chocadxp = true;
                         }
                     }
@@ -88,10 +104,14 @@ public abstract class Pieza {
                 if (!(elemento[0] - n < 0 || elemento[1] + n > 7)) {
                     if (!chocadyp) {
                         if (Juego.tablero.tab[elemento[0] - n][elemento[1] + n] != null) {
-                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1] + n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
-                                if (Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Alfil || Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Reina || ((Juego.tablero.tab[elemento[0]][elemento[1]].color) && Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Peon)) {
+                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1] + n].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) == 0 && this.color && (n == 1)){
+                                    if(Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Peon && Juego.tablero.tab[elemento[0] - n][elemento[1] + n].color != this.color);
                                     return true;
                                 }
+                                if (Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Alfil || Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Reina || ((Juego.piezaJaque.color) && Juego.tablero.tab[elemento[0] - n][elemento[1] + n] instanceof Peon)) {
+                                    return true;
+                                } else chocadyp = true;
                             } else chocadyp = true;
                         }
                     }
@@ -99,10 +119,14 @@ public abstract class Pieza {
                 if (!(elemento[0] - n < 0 || elemento[1] - n < 0)) {
                     if (!chocadxn) {
                         if (Juego.tablero.tab[elemento[0] - n][elemento[1] - n] != null) {
-                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1] - n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
-                                if (Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Alfil || Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Reina || ((Juego.tablero.tab[elemento[0]][elemento[1]].color) && Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Peon)) {
+                            if ((Juego.tablero.tab[elemento[0] - n][elemento[1] - n].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) == 0 && this.color && (n == 1)){
+                                    if(Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Peon && Juego.tablero.tab[elemento[0] - n][elemento[1] - n].color != this.color);
                                     return true;
                                 }
+                                if (Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Alfil || Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Reina || ((Juego.piezaJaque.color) && Juego.tablero.tab[elemento[0] - n][elemento[1] - n] instanceof Peon)) {
+                                    return true;
+                                } else chocadxn = true;
                             } else chocadxn = true;
                         }
                     }
@@ -110,10 +134,14 @@ public abstract class Pieza {
                 if (!(elemento[0] + n > 7 || elemento[1] - n < 0)) {
                     if (!chocadyn) {
                         if (Juego.tablero.tab[elemento[0] + n][elemento[1] - n] != null) {
-                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1] - n].color != Juego.tablero.tab[elemento[0]][elemento[1]].color)) {
-                                if (Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Alfil || Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Reina || (!(Juego.tablero.tab[elemento[0]][elemento[1]].color) && Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Peon)) {
+                            if ((Juego.tablero.tab[elemento[0] + n][elemento[1] - n].color != Juego.piezaJaque.color)) {
+                                if(this.movAmenaza.indexOf(elemento) == 0 && !this.color && (n == 1)){
+                                    if(Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Peon && Juego.tablero.tab[elemento[0] + n][elemento[1] - n].color != this.color);
                                     return true;
                                 }
+                                if (Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Alfil || Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Reina || (!(Juego.piezaJaque.color) && Juego.tablero.tab[elemento[0] + n][elemento[1] - n] instanceof Peon)) {
+                                    return true;
+                                } else chocadyn = true;
                             } else chocadyn = true;
                         }
                     }

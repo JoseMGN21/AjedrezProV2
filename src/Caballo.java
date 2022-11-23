@@ -2,19 +2,19 @@ import java.util.ArrayList;
 
 public class Caballo extends Pieza {
 
-    public Caballo(){
+    public Caballo(int posx, int posy){
         super();
         viva=true;
         icon="♞";
 
-        if (Tablero.posx==0)
+        if (posx==0)
             color=false;
         else
             color=true;
 
         regresar=true;
-        posicionx=Tablero.posx;
-        posiciony=Tablero.posy;
+        posicionx=posx;
+        posiciony=posy;
     }
 
     @Override
@@ -80,26 +80,9 @@ public class Caballo extends Pieza {
         posPieza[0] = this.posicionx;
         posPieza[1] = this.posiciony;
         buscarRey(posPieza);
-        if(Juego.jaqueNegro){
-            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyN[0]][Juego.posReyN[1]])){
-                Juego.jaqueMate = true;
-                if(Juego.jaqueMate){
-                    System.out.println("Jaque mate");
-                    System.exit(0);}
-                return;
-            }
-            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
-        } else if (Juego.jaqueBlanco){
-            if(!comprobarBloqueoComer() && !comprobarMovimientoRey(Juego.tablero.tab[Juego.posReyB[0]][Juego.posReyB[1]])){
-                Juego.jaqueMate = true;
-                if(Juego.jaqueMate){
-                    System.out.println("Jaque mate");
-                    System.exit(0);}
-                return;
-            }
-            movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
-        }
         try {
+            if(Juego.jaqueBlanco || Juego.jaqueNegro)
+                movValidos = compararListas(movValidos, Juego.piezaJaque.movAmenaza);
             movValidos = compararListas(movValidos, Juego.piezaBloqueada.movAmenaza);
         } catch(Exception e){}
         if (movValidos.size() == 0) {
