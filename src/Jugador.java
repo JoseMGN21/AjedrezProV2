@@ -190,10 +190,12 @@ public void moverPieza(Pieza pieza){
                     Juego.tablero.tab[pieza.posicionx][pieza.posiciony] = null;
                     Juego.tablero.tab[nuevaPosy][nuevaPosx] = pieza;
                     if(pieza instanceof Peon && pieza.color && nuevaPosy == 0){
-                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosx,nuevaPosy);
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosy,nuevaPosx);
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx].color = pieza.color;
                     }
                     else if(pieza instanceof Peon && !pieza.color && nuevaPosy == 7){
-                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosx,nuevaPosy);
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx] = new Reina(nuevaPosy,nuevaPosx);
+                        Juego.tablero.tab[nuevaPosy][nuevaPosx].color = pieza.color;
                     }
                     pieza.posiciony = cp.coordx;
                     pieza.posicionx = cp.coordy;

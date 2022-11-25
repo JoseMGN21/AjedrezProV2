@@ -297,6 +297,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx - n][this.posiciony] instanceof Reina || Juego.tablero.tab[this.posicionx - n][this.posiciony] instanceof Torre) && Juego.tablero.tab[this.posicionx - n][this.posiciony].color != this.color) {
                             Juego.tablero.tab[this.posicionx - n][this.posiciony].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx - n][this.posiciony];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -310,6 +311,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx][this.posiciony - n] instanceof Reina || Juego.tablero.tab[this.posicionx][this.posiciony - n] instanceof Torre) && Juego.tablero.tab[this.posicionx][this.posiciony - n].color != this.color) {
                             Juego.tablero.tab[this.posicionx][this.posiciony - n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx][this.posiciony - n];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -323,6 +325,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx + n][this.posiciony] instanceof Reina || Juego.tablero.tab[this.posicionx + n][this.posiciony] instanceof Torre) && Juego.tablero.tab[this.posicionx + n][this.posiciony].color != this.color){
                             Juego.tablero.tab[this.posicionx + n][this.posiciony].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx + n][this.posiciony];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -336,6 +339,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx][this.posiciony + n] instanceof Reina || Juego.tablero.tab[this.posicionx][this.posiciony + n] instanceof Torre) && Juego.tablero.tab[this.posicionx][this.posiciony + n].color != this.color) {
                             Juego.tablero.tab[this.posicionx][this.posiciony + n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx][this.posiciony + n];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -349,6 +353,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx - n][this.posiciony - n] instanceof Reina || Juego.tablero.tab[this.posicionx - n][this.posiciony - n] instanceof Alfil) && Juego.tablero.tab[this.posicionx - n][this.posiciony - n].color != this.color) {
                             Juego.tablero.tab[this.posicionx - n][this.posiciony - n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx - n][this.posiciony - n];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -362,6 +367,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx + n][this.posiciony - n] instanceof Reina || Juego.tablero.tab[this.posicionx + n][this.posiciony - n] instanceof Alfil) && Juego.tablero.tab[this.posicionx + n][this.posiciony - n].color != this.color) {
                             Juego.tablero.tab[this.posicionx + n][this.posiciony - n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx + n][this.posiciony - n];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -375,6 +381,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx + n][this.posiciony + n] instanceof Reina || Juego.tablero.tab[this.posicionx + n][this.posiciony + n] instanceof Alfil) && Juego.tablero.tab[this.posicionx + n][this.posiciony + n].color != this.color) {
                             Juego.tablero.tab[this.posicionx + n][this.posiciony + n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx + n][this.posiciony + n];
+                            break;
                         }  else {
                             Juego.piezaBloqueada = null;
                             break;
@@ -388,6 +395,7 @@ public abstract class Pieza {
                         if((Juego.tablero.tab[this.posicionx - n][this.posiciony + n] instanceof Reina || Juego.tablero.tab[this.posicionx - n][this.posiciony + n] instanceof Alfil) && Juego.tablero.tab[this.posicionx + n][this.posiciony - n].color != this.color) {
                             Juego.tablero.tab[this.posicionx - n][this.posiciony + n].amenaza(posRey);
                             Juego.piezaBloqueada = Juego.tablero.tab[this.posicionx - n][this.posiciony + n];
+                            break;
                         } else {
                             Juego.piezaBloqueada = null;
                             break;

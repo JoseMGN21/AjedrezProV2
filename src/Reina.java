@@ -6,7 +6,6 @@ public class Reina extends Pieza {
         super();
         viva = true;
         if (posx == 0) {
-
             color = false;
             icon = "♛";
         } else {

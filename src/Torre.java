@@ -32,6 +32,7 @@ public class Torre extends Pieza {
                         mov[0] =  posicionx + n;
                         mov[1] =  posiciony;
                         movValidos.add(mov.clone());
+                        chocaxp = true;
                     } else chocaxp = true;
                 }
             }
@@ -45,6 +46,7 @@ public class Torre extends Pieza {
                         mov[0] = posicionx;
                         mov[1] = posiciony + n;
                         movValidos.add(mov.clone());
+                        chocayp = true;
                     } else chocayp = true;
                 }
             }
@@ -58,6 +60,7 @@ public class Torre extends Pieza {
                         mov[0] = posicionx - n;
                         mov[1] = posiciony;
                         movValidos.add(mov.clone());
+                        chocaxn = true;
                     } else chocaxn = true;
                 }
             }
@@ -71,6 +74,7 @@ public class Torre extends Pieza {
                         mov[0] = posicionx;
                         mov[1] = posiciony - n;
                         movValidos.add(mov.clone());
+                        chocayn = true;
                     } else chocayn = true;
                 }
             }

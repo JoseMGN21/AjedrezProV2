@@ -54,7 +54,7 @@ public class Peon extends Pieza {
                 }
             }
         } else {
-            for (int n = 1; n <= 2 - l && posicionx - n > 0; n++) {
+            for (int n = 1; n <= 2 - l && posicionx - n >= 0; n++) {
                 if (Juego.tablero.tab[posicionx - n][posiciony] == null) {
                     mov[0] = posicionx - n;
                     mov[1] = posiciony;
